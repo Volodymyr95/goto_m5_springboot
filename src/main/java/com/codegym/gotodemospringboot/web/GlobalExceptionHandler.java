@@ -57,10 +57,23 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
-    public ResponseEntity<String> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
+    public ResponseEntity<Map<String, String>> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
         log.error("Occurred Exception: {} ", e.getMessage(), e);
+        var errors = new HashMap<String, String>();
 
-        return new ResponseEntity<>(e.getTitleMessageCode(), HttpStatus.BAD_REQUEST);
+        e.getAllErrors().forEach(
+                error -> {
+                    if (error instanceof FieldError) {
+                        String fieldName = ((FieldError) error).getField();
+                        String errorMsg = error.getDefaultMessage();
+                        errors.put(fieldName, errorMsg);
+                    } else {
+                        errors.put("error", error.getDefaultMessage());
+                    }
+                }
+        );
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    public void delete(@PathVariable @Min(0) Long id) {
+    public void delete(@PathVariable @Min(value = 0, message = "Id cannot be less than 0") Long id) {
         userService.delete(id);
     }
 

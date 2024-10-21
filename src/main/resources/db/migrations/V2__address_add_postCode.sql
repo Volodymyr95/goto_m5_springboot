@@ -1,0 +1,1 @@
+ALTER TABLE address ADD COLUMN post_code VARCHAR(255)
