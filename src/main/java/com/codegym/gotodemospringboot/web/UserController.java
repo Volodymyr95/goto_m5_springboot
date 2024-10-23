@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping
-    public FullUserInfoDTO update(@RequestBody UpdateUserDto userDto) {
+    public FullUserInfoDTO update(@RequestBody UpdateUserDto userDto){
         return userService.update(userDto);
     }
 
