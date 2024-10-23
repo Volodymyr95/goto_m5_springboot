@@ -2,12 +2,12 @@
         "https://checkstyle.org/dtds/configuration_1_3.dtd">
 <module name="Checker">
     <module name="TreeWalker">
-        <module name="JavadocMethod"/>
         <module name="WhitespaceAround"/>
         <module name="NeedBraces"/>
         <module name="ConstantName"/>
         <module name="MethodName"/>
         <module name="ParameterName"/>
         <module name="WhitespaceAfter"/>
+        <module name="UnusedImports"/>
     </module>
 </module>

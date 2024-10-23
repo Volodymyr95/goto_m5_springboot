@@ -50,10 +50,3 @@ public class UserController {
     }
 
 }
-//loclahost:8080/api/users/ POST
-/*
-C - POST
-R - GET
-U - PUT
-D - DELETE
- */

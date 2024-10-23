@@ -90,26 +90,44 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
-						<id>check</id>
-						<phase>validate</phase>
+						<id>checkstyle-check</id>
 						<goals>
 							<goal>check</goal>
+						</goals>
+						<configuration>
+							<configLocation>checkstyle.xml</configLocation>
+						</configuration>
+					</execution>
+					<execution>
+						<id>checkstyle-report</id>
+						<goals>
 							<goal>checkstyle</goal>
 						</goals>
+						<configuration>
+							<outputFormat>xml</outputFormat>
+							<configLocation>checkstyle.xml</configLocation>
+							<outputDirectory>${project.build.directory}/checkstyle-results</outputDirectory>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<configLocation>checkstyle.xml</configLocation>
-					<failsOnError>true</failsOnError>
-					<outputDirectory>${project.build.directory}/checkstyle-reports</outputDirectory>
-					<failOnViolation>true</failOnViolation>
-					<encoding>UTF-8</encoding>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.2.1</version>
+				<configuration>
+					<outputFormat>html</outputFormat>
+					<configLocation>checkstyle.xml</configLocation>
+					<outputDirectory>${project.build.directory}/checkstyle-results</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
