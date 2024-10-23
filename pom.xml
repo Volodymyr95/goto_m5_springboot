@@ -87,6 +87,28 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>check</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+							<goal>checkstyle</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<failsOnError>true</failsOnError>
+					<outputDirectory>${project.build.directory}/checkstyle-reports</outputDirectory>
+					<failOnViolation>true</failOnViolation>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
