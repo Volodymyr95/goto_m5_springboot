@@ -68,7 +68,7 @@ public class UserService {
         return modelMapper.map(userRepository.save(entity), FullUserInfoDTO.class);
     }
 
-    private void checkIsEmailExist(String email){
+    private void checkIsEmailExist(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new EmailAlreadyInUseException("User with %s email already exists".formatted(email));
         }
