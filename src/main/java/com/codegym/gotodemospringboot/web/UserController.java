@@ -5,6 +5,11 @@ import com.codegym.gotodemospringboot.dto.FullUserInfoDTO;
 import com.codegym.gotodemospringboot.dto.UpdateUserDto;
 import com.codegym.gotodemospringboot.dto.UserDto;
 import com.codegym.gotodemospringboot.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +53,10 @@ public class UserController {
         return userService.update(userDto);
     }
 
+    @Operation(summary = "Get User By ID API", tags = {"user"})
+    @ApiResponses(
+            {@ApiResponse(responseCode = "404", content = {@Content(schema = @Schema)})}
+    )
     @GetMapping("/{id}")
     public FullUserInfoDTO getById(@PathVariable @Min(value = 0, message = "Id cannot be less than 0") Long id) {
         return userService.getById(id);

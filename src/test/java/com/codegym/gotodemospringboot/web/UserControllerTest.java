@@ -57,13 +57,12 @@ class UserControllerTest {
     @SneakyThrows
     public void testGetUserById() {
         User user = new User();
-        user.setId(1L);
         user.setFirstName("Test27");
         user.setLastName("Test27");
         user.setAge(27);
-        userRepository.save(user);
+        Long id = userRepository.save(user).getId();
 
-        mockMvc.perform(get("/api/users/1"))
+        mockMvc.perform(get("/api/users/%s".formatted(id)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("Test27")))
@@ -91,17 +90,16 @@ class UserControllerTest {
     @SneakyThrows
     public void testDeleteById() {
         User user = new User();
-        user.setId(1L);
 
-        userRepository.save(user);
+        Long id = userRepository.save(user).getId();
 
-        assertTrue(userRepository.existsById(1L));
+        assertTrue(userRepository.existsById(id));
 
-        mockMvc.perform(delete("/api/users/1"))
+        mockMvc.perform(delete("/api/users/%s".formatted(id)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertFalse(userRepository.existsById(1L));
+        assertFalse(userRepository.existsById(id));
     }
 
     @Test
@@ -163,24 +161,23 @@ class UserControllerTest {
     @SneakyThrows
     public void testUpdateUser() {
         User user = new User();
-        user.setId(3L);
         user.setAge(20);
 
-        userRepository.save(user);
+        Long userId = userRepository.save(user).getId();
 
         var userJson = """
-                {   "id":3,
+                {   "id":%s,
                     "email": "m2157@gmail.com",
                     "age": 22   
                 }
-                """;
+                """.formatted(userId);
 
         mockMvc.perform(put("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
                 .andExpect(status().isOk());
 
-        User dbUser = userRepository.findById(3L).get();
+        User dbUser = userRepository.findById(userId).get();
         assertEquals(dbUser.getAge(), 22);
 
     }
