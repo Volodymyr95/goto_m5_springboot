@@ -16,6 +16,7 @@ public class UserDto {
     @Pattern(regexp = "^[^0-9]*$", message = "Last name should not contain numbers")
     private String lastName;
     @Email(message = "Invalid email format")
+    @NotNull
     private String email;
     @Min(value = 0, message = "invalid age value")
     @Max(value = 200, message = "Age cannot be more than 200")

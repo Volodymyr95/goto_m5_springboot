@@ -7,8 +7,8 @@ import com.codegym.gotodemospringboot.dto.UserDto;
 import com.codegym.gotodemospringboot.entity.User;
 import com.codegym.gotodemospringboot.exceptions.EmailAlreadyInUseException;
 import com.codegym.gotodemospringboot.exceptions.EntityNotFoundException;
-import com.codegym.gotodemospringboot.exceptions.InvalidIdException;
 import com.codegym.gotodemospringboot.repository.UserRepository;
+import com.codegym.gotodemospringboot.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,6 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final UserMapper userMapper;
 
     public FullUserInfoDTO create(UserDto user) {
         checkIsEmailExist(user.getEmail());
@@ -54,18 +55,22 @@ public class UserService {
     }
 
     public FullUserInfoDTO update(UpdateUserDto userDto) {
-
-        if (userDto.getId() == null || !userRepository.existsById(userDto.getId())) {
-            throw new InvalidIdException("Invalid ID value");
-        }
+        var user = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User with id: %s not found".formatted(userDto.getId())));
 
         if (userRepository.existsByEmailAndIdNot(userDto.getEmail(), userDto.getId())) {
             throw new EmailAlreadyInUseException("Email already in use");
         }
 
-        User entity = modelMapper.map(userDto, User.class);
+        userMapper.mapUserFromUserDto(userDto, user);
 
-        return modelMapper.map(userRepository.save(entity), FullUserInfoDTO.class);
+        return modelMapper.map(userRepository.save(user), FullUserInfoDTO.class);
+    }
+
+    public FullUserInfoDTO getById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with %s not found".formatted(id)));
+        return modelMapper.map(user, FullUserInfoDTO.class);
     }
 
     private void checkIsEmailExist(String email) {

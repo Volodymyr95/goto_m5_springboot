@@ -27,7 +27,7 @@ public class UserController {
         return userService.create(user);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable @Min(value = 0, message = "Id cannot be less than 0") Long id) {
         userService.delete(id);
     }
@@ -37,16 +37,20 @@ public class UserController {
         return userService.getByEmail(email);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/")
     public List<BasicUserDto> getUserByFirstOrLastName(@RequestParam(required = false) String firstName,
                                                        @RequestParam(required = false) String lastName) {
         return userService.getByFirstNameOrLastName(firstName, lastName);
-
     }
 
     @PutMapping
     public FullUserInfoDTO update(@RequestBody UpdateUserDto userDto) {
         return userService.update(userDto);
+    }
+
+    @GetMapping("/{id}")
+    public FullUserInfoDTO getById(@PathVariable @Min(value = 0, message = "Id cannot be less than 0") Long id) {
+        return userService.getById(id);
     }
 
 }
